@@ -1,0 +1,78 @@
+# Copyright 2011 Paremus Limited
+#  
+# Licensed under the Apache License, Version 2.0 (the License)
+# you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License. 
+# see http://www.apache.org/licenses/LICENSE-2.0 
+
+nim:index --enable-ee-spotters gateway dist dist/index-nim.xml
+nim:index commons lib/commons lib/commons/index-nim.xml
+nim:index gemini-blueprint lib/gemini-blueprint lib/gemini-blueprint/index-nim.xml
+nim:index gemini-jpa lib/gemini-jpa lib/gemini-jpa/index-nim.xml
+nim:index eclipse-link lib/eclipse-link lib/eclipse-link/index-nim.xml
+nim:index spring lib/spring lib/spring/index-nim.xml
+nim:index aries lib/aries lib/aries/index-nim.xml
+
+nim:repository gemini-ext {
+  rule osgi.service/blueprint.extender {
+    req builder/primordial.builder
+    req osgi.active.bundle/org.eclipse.gemini.blueprint.extender
+  }
+  rule osgi.service/jpa.provider {
+    req builder/primordial.builder
+    req osgi.fragment.bundle/org.eclipse.gemini.jpa.weaving
+    req osgi.active.bundle/org.eclipse.gemini.jpa
+  }
+}
+
+nim:export gemini-ext dist/gemini-ext.xml
+
+nim:repository aries-ext {
+  rule osgi.service/blueprint {
+    req builder/primordial.builder
+    req osgi.active.bundle/org.apache.aries.blueprint
+    req osgi.active.bundle/org.apache.aries.proxy
+    req osgi.active.bundle/org.apache.aries.transaction.blueprint
+    req osgi.active.bundle/org.apache.aries.jpa.blueprint.aries
+    cap osgi.service/blueprint.extender
+  }
+  rule osgi.service/jta {
+    req builder/primordial.builder
+    req osgi.active.bundle/org.apache.aries.transaction.manager
+    cap osgi.service/jta.provider
+  }
+  rule osgi.service/jndi {
+    req builder/primordial.builder
+    req osgi.active.bundle/org.apache.aries.jndi
+    cap osgi.service/jndi.provider
+  }
+  rule osgi.service/jpa {
+    req builder/primordial.builder
+    req osgi.active.bundle/org.apache.aries.jpa.container
+    req osgi.active.bundle/org.apache.aries.jpa.container.context
+    req osgi.active.bundle/org.apache.openjpa
+    cap osgi.service/jpa.provider
+  }
+}
+
+nim:export aries-ext dist/aries-ext.xml
+
+echo "index.name: gateway
+gateway;1:  dist/index-nim.xml
+aries;1:  lib/aries/index-nim.xml
+aries-ext;1:  dist/aries-ext.xml
+commons;1:  lib/commons/index-nim.xml
+eclipse-link;1:  lib/eclipse-link/index-nim.xml
+gemini-blueprint;1:  lib/gemini-blueprint/index-nim.xml
+gemini-ext;1:  dist/gemini-ext.xml
+gemini-jpa;1:  lib/gemini-jpa/index-nim.xml
+spring;1:  lib/spring/index-nim.xml" | tac gateway.repos

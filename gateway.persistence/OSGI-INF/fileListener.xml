@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2006-2011 Paremus Limited. All rights reserved.
+  PAREMUS PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<blueprint default-activation="eager" default-timeout="0"
+        xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="file" class="com.example.gateway.persistence.FilePersistenceListener" activation="eager">
+        <property name="dir" value="var/messages" />
+    </bean>
+
+    <service id="listener" interface="com.example.gateway.GatewayListener" ref="file" activation="eager">
+        <service-properties>
+            <entry key="service.exported.interfaces" value="*" />
+        </service-properties>
+    </service>
+</blueprint>

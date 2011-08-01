@@ -1,0 +1,39 @@
+# Copyright 2011 Paremus Limited
+#  
+# Licensed under the Apache License, Version 2.0 (the License)
+# you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License. 
+# see http://www.apache.org/licenses/LICENSE-2.0 
+
+repos -lm gateway.repos
+repos -l gateway
+repos -l commons
+repos -l nimble-rs
+
+path = "gateway,nimble-rs,commons"
+if { expr $1 == aries } {
+  repos -l aries
+  repos -l aries-ext
+  path = ${path},aries-ext,aries
+} {
+  repos -l eclipse-link
+  repos -l gemini-blueprint
+  repos -l gemini-ext
+  repos -l gemini-jpa
+  repos -l spring
+
+  path = ${path},gemini-ext,gemini-jpa,eclipse-link,gemini-blueprint,spring
+}
+
+path = ${path},policy,fabric,nimble,fabric-ext,nimble-ext,nimble-cmpn
+
+repos -p $path

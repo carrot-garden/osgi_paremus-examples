@@ -1,0 +1,6 @@
+-buildpath: osgi.core,\
+	osgi.cmpn,\
+	org.apache.commons.cli,\
+	gateway.api;version=latest
+Bundle-Activator: com.example.gateway.cli.GatewayCLIActivator
+Private-Package: com.example.gateway.cli

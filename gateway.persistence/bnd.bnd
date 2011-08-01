@@ -1,0 +1,2 @@
+Private-Package: com.example.gateway.persistence
+-buildpath: gateway.api;version=latest
