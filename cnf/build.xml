@@ -55,7 +55,7 @@
 	<!--
 	     Scala compilation 
 	-->
-	<target name="scala.init" depends="init" unless="scala.initialised">
+	<target name="scala.init" depends="init" unless="scala.initialized">
 		<property name="scala-library.jar" value="${workspacedir}/cnf/scala/scala-library.jar" />
 		<taskdef resource="scala/tools/ant/antlib.xml">
 			<classpath>
