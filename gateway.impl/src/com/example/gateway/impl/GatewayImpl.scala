@@ -25,8 +25,7 @@ import java.{util => ju}
 import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
 
-//@Component(provide=Array(classOf[GatewaySPI], classOf[PricingEngineClient]))
-@Component
+@Component(provide=Array(classOf[GatewaySPI], classOf[PricingEngineClient]))
 class GatewayImpl extends AnyRef 
 	with GatewaySPI 
 	with PricingEngineClient 
