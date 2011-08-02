@@ -16,24 +16,13 @@
 
 repos -lm gateway.repos
 repos -l gateway
-repos -l commons
+repos -l localrepo
 repos -l nimble-rs
+repos -l aries
+repos -l aries-ext
 
-path = "gateway,nimble-rs,commons"
-if { expr $1 == aries } {
-  repos -l aries
-  repos -l aries-ext
-  path = ${path},aries-ext,aries
-} {
-  repos -l eclipse-link
-  repos -l gemini-blueprint
-  repos -l gemini-ext
-  repos -l gemini-jpa
-  repos -l spring
-
-  path = ${path},gemini-ext,gemini-jpa,eclipse-link,gemini-blueprint,spring
-}
-
-path = ${path},policy,fabric,nimble,fabric-ext,nimble-ext,nimble-cmpn
+path = "gateway,nimble-rs"
+path = ${path},aries-ext,aries
+path = ${path},localrepo,policy,fabric,nimble,fabric-ext,nimble-ext,nimble-cmpn
 
 repos -p $path

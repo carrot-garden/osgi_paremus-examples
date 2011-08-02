@@ -15,21 +15,8 @@
 # see http://www.apache.org/licenses/LICENSE-2.0 
 
 nim:index --enable-ee-spotters gateway gateway.build/repository gateway.build/repository/index-nim.xml
-nim:index cnf/localrepo cnf/repo cnf/repo/index-nim.xml
-
-nim:repository gemini-ext {
-  rule osgi.service/blueprint.extender {
-    req builder/primordial.builder
-    req osgi.active.bundle/org.eclipse.gemini.blueprint.extender
-  }
-  rule osgi.service/jpa.provider {
-    req builder/primordial.builder
-    req osgi.fragment.bundle/org.eclipse.gemini.jpa.weaving
-    req osgi.active.bundle/org.eclipse.gemini.jpa
-  }
-}
-
-nim:export gemini-ext gateway.build/repository/gemini-ext.xml
+nim:index localrepo cnf/repo cnf/repo/index-nim.xml
+nim:index aries cnf/ariesrepo cnf/ariesrepo/index-nim.xml
 
 nim:repository aries-ext {
   rule osgi.service/blueprint {
@@ -59,8 +46,10 @@ nim:repository aries-ext {
   }
 }
 
-nim:export aries-ext gateway.build/repository/aries-ext.xml
+nim:export aries-ext cnf/ariesrepo/aries-ext.xml
 
 echo "index.name: gateway
 gateway;1:  gateway.build/repository/index-nim.xml
-localrepo;1:  cnf/repo/index-nim.xml" | tac gateway.build/repository/gateway.repos
+aries;1:  cnf/ariesrepo/index-nim.xml
+aries-ext;1:  cnf/ariesrepo/aries-ext.xml
+localrepo;1:  cnf/repo/index-nim.xml" | tac gateway.repos

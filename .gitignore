@@ -5,4 +5,7 @@
 /*/generated
 /cnf/cache
 /cnf/repo/index-nim.xml
+/cnf/ariesrepo/index-nim.xml
+/cnf/ariesrepo/aries-ext.xml
 /gateway.build/repository
+/gateway.repos
