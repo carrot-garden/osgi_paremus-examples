@@ -68,10 +68,6 @@
 
 	<target name="scala.compile" depends="scala.init,dependencies" if="project.sourcepath">
  		<mkdir dir="${project.output}"   />
-		<property name="build.cp" value=""/>
-		<path id="external.classpath" path="${build.cp}">
-			<fileset dir="${lib}" includes="osgi.*.jar"/>
-		</path>
 		<scalac fork="yes"
 			bootclasspath="${project.bootclasspath}"
 			srcdir="${project.sourcepath}"
