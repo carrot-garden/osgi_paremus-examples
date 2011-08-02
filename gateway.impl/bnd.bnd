@@ -10,6 +10,7 @@ Import-Package: \
 	!aQute.bnd.annotation.metatype,\
 	*
 -runfw: org.apache.felix.framework
+-metatype: *
 -buildpath: osgi.core,\
 	osgi.cmpn,\
 	biz.aQute.bnd.annotation,\

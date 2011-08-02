@@ -26,6 +26,7 @@ import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
 import aQute.bnd.annotation.metatype.Meta.OCD
 
+@OCD(factory=true)    
 @Component(
     immediate=true,
     provide=Array(
@@ -36,7 +37,6 @@ import aQute.bnd.annotation.metatype.Meta.OCD
     properties=Array("service.exported.interfaces=*"),
     designate=classOf[GatewayConfig]
     )
-@OCD(factory=true)    
 class GatewayImpl extends AnyRef 
 	with GatewaySPI 
 	with PricingEngineClient 

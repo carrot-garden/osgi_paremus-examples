@@ -31,14 +31,13 @@ import aQute.bnd.annotation.component.Component
 import aQute.bnd.annotation.component.Reference
 import aQute.bnd.annotation.metatype.Meta.OCD
 
-
+@OCD(factory=true)    
 @Component(
     immediate=true,
     provide=Array(classOf[PricingEngine]),
     properties=Array("service.exported.interfaces=*"),
     designate=classOf[PricerConfig]
     )
-@OCD(factory=true)
 class PricerImpl extends PricingEngine {
   private val clients = new HashMap[String, ActorPricingEngineClient]
 
