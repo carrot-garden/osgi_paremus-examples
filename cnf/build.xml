@@ -74,8 +74,7 @@
 			destdir="${project.output}">
 			<classpath>
 				<path location="${scala-library.jar}"   />
- 				<path refid="project.buildpath"/>
- 				<fileset dir="${dist}" includes="*.jar"/>
+ 				<pathelement path="${project.buildpath}"/>
 			</classpath>
     		</scalac>
 	</target>
