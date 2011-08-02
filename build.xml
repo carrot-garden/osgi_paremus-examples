@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="examples" default="build">
-  <import file="cnf/build.xml"/>
+  <target name="build">
+    <ant dir="gateway.api" target="build"/>
+  </target>
+
+
+  <target name="clean">
+    <ant dir="gateway.api" target="deepclean"/>
+  </target>
 </project>

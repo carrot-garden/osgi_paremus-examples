@@ -13,7 +13,7 @@
 			<format property="NOW" pattern="yyyyMMdd-HHmm" timezone="UTC"/>
 		</tstamp>
 		
-		<dirname property="projectdir" file="${ant.file.master}" />
+		<dirname property="projectdir" file="${ant.file}" />
 		<dirname property="workspacedir" file="${projectdir}" />
 		<taskdef resource="aQute/bnd/ant/taskdef.properties">
 			<classpath>
