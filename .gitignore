@@ -1,6 +1,6 @@
-.metadata
-.scala_dependencies
-bin
-bin_test
-generated
-cnf/cache
+/.metadata
+/.scala_dependencies
+/*/bin
+/*/bin_test
+/*/generated
+/cnf/cache
