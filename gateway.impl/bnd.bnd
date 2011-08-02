@@ -4,6 +4,7 @@ Private-Package: com.example.gateway.impl
 	org.apache.felix.shell,\
 	org.apache.felix.shell.tui
 Service-Component: *
+Import-Package: !aQute.bnd.annotation.component,*
 -runfw: org.apache.felix.framework
 -buildpath: osgi.core,\
 	osgi.cmpn,\
