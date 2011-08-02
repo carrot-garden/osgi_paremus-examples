@@ -28,7 +28,12 @@ import collection.mutable.HashMap
 import aQute.bnd.annotation.component.Component
 
 
-@Component
+@Component(
+    immediate=true,
+    provide=Array(classOf[PricingEngine]),
+    properties=Array("service.exported.interfaces=*"),
+    designate=classOf[PricerConfig]
+    )
 class PricerImpl extends PricingEngine {
   private val clients = new HashMap[String, ActorPricingEngineClient]
 
