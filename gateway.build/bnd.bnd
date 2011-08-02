@@ -1,5 +1,6 @@
 -dependson:\
 	gateway.cli,\
+	gateway.impl,\
 	gateway.pricer
 	
 -nobundles: true
