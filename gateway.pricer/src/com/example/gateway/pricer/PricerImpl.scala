@@ -29,6 +29,7 @@ import collection.mutable.HashMap
 import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
 import aQute.bnd.annotation.component.Reference
+import aQute.bnd.annotation.metatype.Meta.OCD
 
 
 @Component(
@@ -37,6 +38,7 @@ import aQute.bnd.annotation.component.Reference
     properties=Array("service.exported.interfaces=*"),
     designate=classOf[PricerConfig]
     )
+@OCD(factory=true)
 class PricerImpl extends PricingEngine {
   private val clients = new HashMap[String, ActorPricingEngineClient]
 
