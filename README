@@ -1,0 +1,38 @@
+Overview:
+
+This example shows a simple pricing gateway set up that demonstrates the following:
+
+* A trivial implementation of a gateway with command line client
+and backend pricing engine and asynchronous gateway listeners.
+
+* The gateway and the pricing engine are written in Scala for its
+async behaviours and use OSGi declarative services as the component
+model.
+
+* There is a simple blueprint persistence gateway listener written in
+Java that takes quotes/requests and writes them to disk
+
+* The command line is a Java OSGi bundle
+
+* The remote communications are pluggable via RSA but the demo will
+default to using SLP for discovery and EssenceRMI for the transport.
+
+* Systems and repositories used to deploy the components on the fabric.
+
+Source:
+
+The source is split up into the following directories:
+
+* gateway.api - shared Java api for components
+* gateway.persistence - blueprint persistence component
+* gateway.cli - simple osgi shell
+* gateway.pricer - scala pricing engine using declarative services
+* gateway.scripts - scripts to launch components in nimble
+* gateway.system - systems to deploy components in fabric
+
+Build:
+
+All the dependencies are packaged with this example so just run ant from the top level gateway directory
+
+$ cd $examples
+$ ant -f gateway.build/build.xml
