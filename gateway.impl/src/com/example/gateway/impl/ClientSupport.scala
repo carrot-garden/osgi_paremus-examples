@@ -37,7 +37,7 @@ trait ClientSupport extends ListenerSupport {
 
   private val clients = new HashMap[String, GatewayClient]
 
-  @Reference(`type`=*)
+  @Reference(`type`='*')
   def addClient(client: GatewayClient, attributes: ju.Map[String, Any]) {
     updateState(attributes.toMap) {
       state =>

@@ -27,7 +27,7 @@ import aQute.bnd.annotation.component.Reference
 trait ListenerSupport {
   private val listeners = new HashMap[GatewayListener, AsyncGatewayListener]
 
-  @Reference(`type`=*)
+  @Reference(`type`='*')
   def addListener(listener: GatewayListener) {
     listeners.synchronized {
       val async = new AsyncGatewayListener(listener)

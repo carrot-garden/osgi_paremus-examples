@@ -28,7 +28,7 @@ import aQute.bnd.annotation.component.Reference
 trait PricerSupport {
   private val pricers = new HashMap[PricingEngine, Map[String, Any]]
 
-  @Reference(`type`=*)
+  @Reference(`type`='*')
   def addPricer(pricer: PricingEngine, attributes: ju.Map[String, Any]) {
     pricers.synchronized {
       pricers += pricer -> attributes.toMap
