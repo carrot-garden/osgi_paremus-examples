@@ -45,11 +45,49 @@
 		<bnd command="test" exceptions="true" basedir="${project}" />
 	</target>
 
+
 	<!--
 	     COMPILE
 	     Compile the sources. 
 	-->
-	<target name="compile" depends="dependencies" if="project.sourcepath">
+        <target name="compile" depends="java.compile"/>
+
+	<!--
+	     Scala compilation 
+	-->
+	<target name="scala.init" depends="init" unless="scala.initialised">
+		<property name="scala-library.jar" value="${workspacedir}/cnf/scala/scala-library.jar" />
+		<taskdef resource="scala/tools/ant/antlib.xml">
+			<classpath>
+				<pathelement location="${workspacedir}/cnf/scala/scala-compiler.jar"   />
+				<pathelement location="${scala-library.jar}"   />
+			</classpath>
+		</taskdef>
+		<property name="scala.initialized" value="set" />
+	</target>
+
+	<target name="scala.compile" depends="scala.init,dependencies" if="project.sourcepath">
+ 		<mkdir dir="${project.output}"   />
+		<property name="build.cp" value=""/>
+		<path id="external.classpath" path="${build.cp}">
+			<fileset dir="${lib}" includes="osgi.*.jar"/>
+		</path>
+		<scalac fork="yes"
+			bootclasspath="${project.bootclasspath}"
+			srcdir="${project.sourcepath}"
+			destdir="${project.output}">
+			<classpath>
+				<path location="${scala-library.jar}"   />
+ 				<path refid="project.buildpath"/>
+ 				<fileset dir="${dist}" includes="*.jar"/>
+			</classpath>
+    		</scalac>
+	</target>
+
+	<!--
+	     Java compilation 
+	-->
+	<target name="java.compile" depends="dependencies" if="project.sourcepath">
 		<mkdir dir="${project.output}"/>
 		<javac fork="yes" executable="${javac}" srcdir="${project.sourcepath}" destdir="${project.output}" classpath="${project.buildpath}" bootclasspath="${project.bootclasspath}" deprecation="true" listfiles="true" target="${javac.target}" source="${javac.source}" debug="${javac.debug}" includeAntRuntime="no" verbose="${verbose}" />
 		<!-- 
