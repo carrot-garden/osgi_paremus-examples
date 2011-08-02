@@ -23,9 +23,19 @@ import messages._
 import collection.JavaConversions._
 import java.{util => ju}
 import aQute.bnd.annotation.component.Activate
+import aQute.bnd.annotation.component.ConfigurationPolicy.require
 import aQute.bnd.annotation.component.Component
 
-@Component(provide=Array(classOf[GatewaySPI], classOf[PricingEngineClient]))
+@Component(
+    immediate=true,
+    provide=Array(
+        classOf[Gateway], 
+        classOf[GatewaySPI], 
+        classOf[PricingEngineClient]
+        ),
+    properties=Array("service.exported.interfaces=*"),
+    designate=classOf[GatewayConfig]
+    )
 class GatewayImpl extends AnyRef 
 	with GatewaySPI 
 	with PricingEngineClient 
