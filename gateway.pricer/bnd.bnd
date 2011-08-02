@@ -3,7 +3,10 @@
 	org.apache.felix.shell,\
 	org.apache.felix.shell.tui
 Service-Component: *
-Import-Package: !aQute.bnd.annotation.component,*
+Import-Package: *,\
+	!aQute.bnd.annotation.component,\
+	!aQute.bnd.annotation.metatype
+	*
 -runfw: org.apache.felix.framework
 -buildpath: osgi.core,\
 	osgi.cmpn,\
