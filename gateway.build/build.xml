@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="project" default="build"> 
+<project name="project" default="repo"> 
 	<import file="../cnf/build.xml"/>
+	<target name="repo" depends="build">
+		<mkdir dir="repository" />
+		<copy todir="repository" flatten="true">
+			<fileset dir="${workspacedir}" includes="**/generated/*.jar" />
+		</copy>
+	</target>
 </project>
