@@ -4,4 +4,5 @@
 /*/bin_test
 /*/generated
 /cnf/cache
+/cnf/repo/index-nim.xml
 /gateway.build/repository

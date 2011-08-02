@@ -14,13 +14,8 @@
 # under the License. 
 # see http://www.apache.org/licenses/LICENSE-2.0 
 
-nim:index --enable-ee-spotters gateway dist dist/index-nim.xml
-nim:index commons lib/commons lib/commons/index-nim.xml
-nim:index gemini-blueprint lib/gemini-blueprint lib/gemini-blueprint/index-nim.xml
-nim:index gemini-jpa lib/gemini-jpa lib/gemini-jpa/index-nim.xml
-nim:index eclipse-link lib/eclipse-link lib/eclipse-link/index-nim.xml
-nim:index spring lib/spring lib/spring/index-nim.xml
-nim:index aries lib/aries lib/aries/index-nim.xml
+nim:index --enable-ee-spotters gateway gateway.build/repository gateway.build/repository/index-nim.xml
+nim:index cnf/localrepo cnf/repo cnf/repo/index-nim.xml
 
 nim:repository gemini-ext {
   rule osgi.service/blueprint.extender {
@@ -34,7 +29,7 @@ nim:repository gemini-ext {
   }
 }
 
-nim:export gemini-ext dist/gemini-ext.xml
+nim:export gemini-ext gateway.build/repository/gemini-ext.xml
 
 nim:repository aries-ext {
   rule osgi.service/blueprint {
@@ -64,15 +59,8 @@ nim:repository aries-ext {
   }
 }
 
-nim:export aries-ext dist/aries-ext.xml
+nim:export aries-ext gateway.build/repository/aries-ext.xml
 
 echo "index.name: gateway
-gateway;1:  dist/index-nim.xml
-aries;1:  lib/aries/index-nim.xml
-aries-ext;1:  dist/aries-ext.xml
-commons;1:  lib/commons/index-nim.xml
-eclipse-link;1:  lib/eclipse-link/index-nim.xml
-gemini-blueprint;1:  lib/gemini-blueprint/index-nim.xml
-gemini-ext;1:  dist/gemini-ext.xml
-gemini-jpa;1:  lib/gemini-jpa/index-nim.xml
-spring;1:  lib/spring/index-nim.xml" | tac gateway.repos
+gateway;1:  gateway.build/repository/index-nim.xml
+localrepo;1:  cnf/repo/index-nim.xml" | tac gateway.build/repository/gateway.repos
