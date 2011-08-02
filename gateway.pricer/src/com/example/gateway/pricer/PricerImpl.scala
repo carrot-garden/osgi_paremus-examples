@@ -18,6 +18,7 @@
 package com.example.gateway.pricer
 
 import java.lang.String
+
 import java.{util => ju}
 import com.example.gateway.{PricingEngineClient, PricingEngine}
 import collection.JavaConversions._
@@ -25,7 +26,9 @@ import actors.Actor._
 import com.example.gateway.messages.{Quote, QuoteRequest}
 import java.util.Random
 import collection.mutable.HashMap
+import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
+import aQute.bnd.annotation.component.Reference
 
 
 @Component(
@@ -41,6 +44,7 @@ class PricerImpl extends PricingEngine {
 
   private var indicative = true;
 
+  @Activate
   def activate(properties: ju.Map[String, Any]) {
     indicative = properties.toMap.get(PricingEngine.TYPE) match {
       case Some(str: String) => {
@@ -54,6 +58,7 @@ class PricerImpl extends PricingEngine {
   }
 
 
+  @Reference(`type`='*')
   def addClient(client: PricingEngineClient, attributes: ju.Map[String, Any]) {
     attributes.toMap.get(PricingEngineClient.ID) match {
       case Some(id: String) => {

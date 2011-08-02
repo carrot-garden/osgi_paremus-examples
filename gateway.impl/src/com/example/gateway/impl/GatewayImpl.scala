@@ -23,7 +23,6 @@ import messages._
 import collection.JavaConversions._
 import java.{util => ju}
 import aQute.bnd.annotation.component.Activate
-import aQute.bnd.annotation.component.ConfigurationPolicy.require
 import aQute.bnd.annotation.component.Component
 
 @Component(
