@@ -29,14 +29,13 @@ import collection.mutable.HashMap
 import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
 import aQute.bnd.annotation.component.Reference
-import aQute.bnd.annotation.metatype.Meta.OCD
 
-@OCD(factory=true)    
 @Component(
+    name="com.example.pricer",
     immediate=true,
     provide=Array(classOf[PricingEngine]),
     properties=Array("service.exported.interfaces=*"),
-    designate=classOf[PricerConfig]
+    designateFactory=classOf[PricerConfig]
     )
 class PricerImpl extends PricingEngine {
   private val clients = new HashMap[String, ActorPricingEngineClient]
@@ -54,7 +53,7 @@ class PricerImpl extends PricingEngine {
         else throw new IllegalArgumentException("Invalid pricing engine type " + str)
       }
       case Some(other) => throw new IllegalArgumentException("Invalid id type")
-      case None => throw new IllegalStateException("No id specified")
+      case None => throw new IllegalStateException("No type specified")
     }
   }
 

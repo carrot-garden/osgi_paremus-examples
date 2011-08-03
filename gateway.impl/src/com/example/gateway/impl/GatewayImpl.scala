@@ -24,10 +24,9 @@ import collection.JavaConversions._
 import java.{util => ju}
 import aQute.bnd.annotation.component.Activate
 import aQute.bnd.annotation.component.Component
-import aQute.bnd.annotation.metatype.Meta.OCD
 
-@OCD(factory=true)    
 @Component(
+    name="com.example.gateway",
     immediate=true,
     provide=Array(
         classOf[Gateway], 
@@ -35,7 +34,7 @@ import aQute.bnd.annotation.metatype.Meta.OCD
         classOf[PricingEngineClient]
         ),
     properties=Array("service.exported.interfaces=*"),
-    designate=classOf[GatewayConfig]
+    designateFactory=classOf[GatewayConfig]
     )
 class GatewayImpl extends AnyRef 
 	with GatewaySPI 

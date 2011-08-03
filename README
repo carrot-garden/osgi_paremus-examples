@@ -43,11 +43,11 @@ $ posh
 % sh gateway.scripts/repos/makeRepos.osh
 % sh gateway.scripts/repos/loadRepos.osh
 
-% nim add msf/com.example.gateway.impl.GatewayImpl id=foo
-% nim add msf/com.example.gateway.pricer.PricerImpl#f type=firm
-% nim add msf/com.example.gateway.pricer.PricerImpl#i type=indicative
+% nim add msf/com.example.gateway id=foo
+% nim add msf/com.example.pricer#f type=firm
+% nim add msf/com.example.pricer#i type=indicative
 % nim add osgi.active.bundle/gateway.cli
 
 % gateway login demo
 % gateway request paremus ibm oracle microsoft yahoo
-% gateway testbatch --batchSize=10000 --requestTimeout=60000
+% gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
