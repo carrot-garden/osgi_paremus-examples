@@ -23,6 +23,6 @@ sh ($0 resolve dosgi.osh)
 
 repos -lm ($base resolve gateway.repos)
 repos -l gateway
-repos -l commons
+repos -l localrepo 
 
-nim add osgi.active.bundle/com.example.gateway.cli
+nim add osgi.active.bundle/gateway.cli

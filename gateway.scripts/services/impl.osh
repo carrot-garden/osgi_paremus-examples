@@ -24,4 +24,4 @@ sh ($0 resolve dosgi.osh)
 repos -lm ($base resolve gateway.repos)
 repos -l gateway
 
-nim add msf/com.example.gateway id=foo
+nim add msf/com.example.gateway.impl.GatewayImpl id=foo
