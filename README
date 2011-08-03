@@ -2,8 +2,8 @@ Overview:
 
 This example shows a simple pricing gateway set up that demonstrates the following:
 
-* A trivial implementation of a gateway with command line client
-and backend pricing engine and asynchronous gateway listeners.
+* A trivial implementation of a gateway with command line client,
+backend pricing engine and asynchronous gateway listeners.
 
 * The gateway and the pricing engine are written in Scala for its
 async behaviours and use OSGi declarative services as the component
