@@ -46,12 +46,14 @@ public class GatewayTestCLI {
     private static final String INDICATIVE = "indicative";
     private static final String VERBOSE = "verbose";
     private static final String BATCH_SIZE = "batchSize";
+    private static final String BATCH_COUNT = "batchCount";
 
     private static final Options options;
 
     static {
         options = new Options();
-        options.addOption(new Option("s", BATCH_SIZE, true, "Number of quotes to request"));
+        options.addOption(new Option("s", BATCH_SIZE, true, "Number of quotes in a batch"));
+        options.addOption(new Option("c", BATCH_COUNT, true, "Number of batches to send"));
         options.addOption(new Option("d", DISCOVERY_TIMEOUT, true, "Timeout to discover gateway service"));
         options.addOption(new Option("t", REQUEST_TIMEOUT, true, "Timeout to receive responses"));
 
@@ -78,6 +80,7 @@ public class GatewayTestCLI {
         boolean verbose = cmds.hasOption(VERBOSE);
         boolean indicative = cmds.hasOption(INDICATIVE);
         int batchSize = getIntValue(cmds, BATCH_SIZE, 1000);
+        int batchCount = getIntValue(cmds, BATCH_COUNT, 10);
         String underlying = getStringValue(cmds, UNDERLYING, "paremus");
         String testName = getStringValue(cmds, TEST_NAME, UUID.randomUUID().toString());
 
@@ -93,7 +96,7 @@ public class GatewayTestCLI {
         Semaphore connected = new Semaphore(1);
         connected.acquire();
 
-        Collection<QuoteRequest> requests = buildQuotes(batchSize, underlying, indicative);
+        List<Collection<QuoteRequest>> requests = buildQuotes(batchSize, batchCount, underlying, indicative);
 
         ServiceRegistration reg = registerListener(testName, connected, testComplete, requests, verbose);
 
@@ -106,7 +109,9 @@ public class GatewayTestCLI {
 
             long start = System.currentTimeMillis();
 
-            gateway.request(loginToken, requests);
+            for(Collection<QuoteRequest> batch : requests) {
+                gateway.request(loginToken, batch);            	
+            }
 
             long sent = System.currentTimeMillis();
 
@@ -123,13 +128,14 @@ public class GatewayTestCLI {
             long complete = System.currentTimeMillis();
 
             long submitTime = (sent - start);
-            long receiveTime = (complete - sent);
+            long totalTime = (complete - start);
+            long totalMsgs = batchSize * batchCount;
 
-            out.println("Sent " + batchSize + " msgs");
+            out.println("Sent " + totalMsgs + " msgs");
             out.println("Submit time=" + submitTime + " ms");
-            out.println("Submit rate=" + Math.round((1000.0 / (double) submitTime) * batchSize) + " msgs/sec");
-            out.println("Receive time=" + receiveTime + " ms");
-            out.println("Submit rate=" + Math.round((1000.0 / (double) receiveTime) * batchSize) + " msgs/sec");
+            out.println("Submit rate=" + Math.round((totalMsgs * 1000.0)/(double) submitTime) + " msgs/sec");
+            out.println("Roundtrip time=" + totalTime + " ms");
+            out.println("Roundtrip rate=" + Math.round((totalMsgs * 1000.0)/(double) totalTime) + " msgs/sec");
         }
         finally {
             if (loginToken != null) {
@@ -167,15 +173,17 @@ public class GatewayTestCLI {
         }
     }
 
-    private ServiceRegistration registerListener(String name, final Semaphore connected, final Semaphore testComplete, Collection<QuoteRequest> requests, final boolean verbose) {
+    private ServiceRegistration registerListener(String name, final Semaphore connected, final Semaphore testComplete, List<Collection<QuoteRequest>> requests, final boolean verbose) {
         Hashtable<String, String> props = new Hashtable<String, String>();
         props.put(GatewayClient.ID, name);
         props.put("service.exported.interfaces", "*");
 
         final HashSet<Object> ids = new HashSet<Object>();
 
-        for (QuoteRequest r : requests) {
-            ids.add(r.getId());
+        for(Collection<QuoteRequest> batch : requests) {
+            for (QuoteRequest r : batch) {
+                ids.add(r.getId());
+            }        	
         }
 
         GatewayClient client = new GatewayClient() {
@@ -205,13 +213,16 @@ public class GatewayTestCLI {
         return ctx.registerService(GatewayClient.class.getName(), client, props);
     }
 
-    public Collection<QuoteRequest> buildQuotes(int batchSize, String underlying, boolean indicative) {
+    public List<Collection<QuoteRequest>> buildQuotes(int batchSize, int batchCount, String underlying, boolean indicative) {
         long seq = 0;
 
-        ArrayList<QuoteRequest> requests = new ArrayList<QuoteRequest>(batchSize);
-
-        for(int i = 0; i < batchSize; i++) {
-            requests.add(new QuoteRequest(seq++, underlying, indicative));
+        ArrayList<Collection<QuoteRequest>> requests = new ArrayList<Collection<QuoteRequest>>(batchCount);
+        for(int i = 0; i < batchCount; i++) {
+            ArrayList<QuoteRequest> batch = new ArrayList<QuoteRequest>(batchSize);
+            for(int j = 0; j < batchSize; j++) {
+            	batch.add(new QuoteRequest(seq++, underlying, indicative));
+            }
+            requests.add(batch);
         }
 
         return requests;
