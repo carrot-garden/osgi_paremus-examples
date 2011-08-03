@@ -144,7 +144,10 @@ trait ClientSupport extends ListenerSupport {
           newState
         }
 
-        sendToClient(s)(List(new Connection(s.id)))
+        s.worker match {
+          case Some(_) => sendToClient(s)(List(new Connection(s.id)))
+          case None => // cannot send a message to an unconnected client
+        }        
       }
       case Some(other) => {
         // TODO log invalid client id
