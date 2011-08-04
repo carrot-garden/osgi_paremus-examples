@@ -136,6 +136,7 @@ public class GatewayTestCLI {
             out.println("Submit rate=" + Math.round((totalMsgs * 1000.0)/(double) submitTime) + " msgs/sec");
             out.println("Roundtrip time=" + totalTime + " ms");
             out.println("Roundtrip rate=" + Math.round((totalMsgs * 1000.0)/(double) totalTime) + " msgs/sec");
+            out.println("Single message roundtrip=" + Math.round(1000 * (double)totalTime)/totalMsgs + " micro seconds");
         }
         finally {
             if (loginToken != null) {
