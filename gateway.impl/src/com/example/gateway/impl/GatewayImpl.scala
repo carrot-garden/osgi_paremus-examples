@@ -62,16 +62,16 @@ class GatewayImpl extends AnyRef
     notifyListeners(quotes)
     
     getConnectionByToken(loginToken) match {
-      case Some(state) => {
-        if (state.blocked) {
-          sendToClient(state) {
+      case Some(connection) => {
+        if (connection.blocked) {
+          sendToClient(connection) {
             for (c <- quotes) yield new QuoteRequestReject(c.getId, "blocked")
           }
         }
         else {          
-          for (quote <- quotes) {
-            if (!submitPrice(state.id, quote)) {
-              sendToClient(state) {
+          for (quote <- quotes.par) {
+            if (!submitPrice(connection.id, quote)) {
+              sendToClient(connection) {
                 new QuoteRequestReject(quote.getId, "pricing engine unavailable") :: Nil
               }
             }
@@ -86,8 +86,8 @@ class GatewayImpl extends AnyRef
 
   def receivePrice(clientID: String, quote: Quote) = {
     getConnectionByID(clientID) match {
-      case Some(state) => {
-        sendToClient(state) {
+      case Some(connection) => {
+        sendToClient(connection) {
           quote :: Nil
         }
       }
