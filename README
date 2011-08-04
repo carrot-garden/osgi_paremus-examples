@@ -42,7 +42,6 @@ Single JVM:
 The following example shows how to setup the components so that they run in a single framework with
 no remote communication. First launch posh in the gateway example directory.
 
-$ cd $gateway
 $ $fabric/bin/posh
 
 Now build the repositories that nimble will use to install the artifacts
