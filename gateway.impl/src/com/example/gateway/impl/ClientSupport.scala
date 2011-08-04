@@ -177,7 +177,7 @@ trait ClientSupport extends ListenerSupport {
     }
   }
 
-  protected def sendToClient(state: ConnectionState)(messages: => Traversable[Message]) {
+  protected def sendToClient(state: ConnectionState)(messages: => TraversableOnce[Message]) {
     state.worker match {
       case Some(worker) => {
         notifyListeners(messages)

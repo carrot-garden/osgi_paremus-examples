@@ -43,7 +43,7 @@ trait ListenerSupport {
     }
   }
 
-  protected def notifyListeners(msgs: Traversable[Message]) {
+  protected def notifyListeners(msgs: TraversableOnce[Message]) {
     listeners.synchronized {
       listeners.values.foreach(_ ! msgs)
     }
@@ -60,7 +60,7 @@ trait ListenerSupport {
       loop {
         receive {
           // TODO this makes remote call in actor thread - bad...refactor to use ThreadPool
-          case msgs: Iterable[Message] => msgs.foreach(underlying.receive(_))
+          case msgs: TraversableOnce[Message] => msgs.foreach(underlying.receive(_))
           case msg: Message => underlying.receive(msg)
         }
       }
