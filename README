@@ -37,17 +37,66 @@ All the dependencies are packaged with this example so just run ant from the top
 $ cd $examples
 $ ant -f gateway.build/build.xml
 
-Run Local:
+Single JVM:
 
-$ posh
-% sh gateway.scripts/repos/makeRepos.osh
-% sh gateway.scripts/repos/loadRepos.osh
+The following example shows how to setup the components so that they run in a single framework with
+no remote communication. First launch posh in the gateway example directory.
 
+$ cd $gateway
+$ $fabric/bin/posh
+
+Now build the repositories that nimble will use to install the artifacts
+
+% sh scripts/repos/makeRepos.osh
+% sh scripts/repos/loadRepos.osh aries
+
+Install the parts of the example, note that Nimble will download the dependencies from the repository.
+
+% nim add osgi.active.bundle/com.example.gateway.cli
 % nim add msf/com.example.gateway id=foo
 % nim add msf/com.example.pricer#f type=firm
 % nim add msf/com.example.pricer#i type=indicative
-% nim add osgi.active.bundle/gateway.cli
+
+Now use the gateway cli to connect and request some quotes
 
 % gateway login demo
 % gateway request paremus ibm oracle microsoft yahoo
 % gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
+
+Multi JVM:
+
+This example launches several nimble instances and installs components in each
+using slp and essence rmi for the remote discovery/communication
+
+$0 $fabric/bin/posh
+$1 $fabric/bin/posh
+$2 $fabric/bin/posh
+
+%0 sh scripts/services/client.osh
+%1 sh scripts/services/impl.osh
+%2 sh scripts/services/pricer.osh
+
+Now use the gateway cli to connect and request some quotes
+
+%0 gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
+
+Fabric:
+
+The final example is to deploy these components via the service fabric using a system document.
+
+First launch a number of fibres with one providing the infrastructure services.
+
+$0 $fabric/bin/posh
+$1 $fabric/bin/posh -kc fibre --type=infra
+$n $fabric/bin/posh -kc fibre
+
+Now connect to the infrastructure fibre and import/deploy the gateway system.
+
+%0 fabric connect localhost:9101
+%0 sh scripts/systems/gateway.osh
+%0 fabric status -S gateway.system
+
+Now use the gateway cli to connect and request some quotes
+
+%0 sh scripts/services/client.osh
+%0 gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
