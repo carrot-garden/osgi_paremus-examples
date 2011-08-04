@@ -16,49 +16,79 @@
  */
 package com.example.gateway.impl
 
-import scala.collection.mutable.HashMap
+import scala.collection.immutable.HashMap
 import java.{ util => ju }
 import collection.JavaConversions._
 import com.example.gateway.PricingEngine
+import util.Random
 import util.Random.shuffle
 import com.example.gateway.messages.QuoteRequest
-
 import aQute.bnd.annotation.component.Reference
+import com.example.gateway.messages.QuoteRequestReject
 
 trait PricerSupport {
-  private val pricers = new HashMap[PricingEngine, Map[String, Any]]
+  private var pricers = new HashMap[String, List[PricingEngine]]
+  private val lock = new AnyRef
 
-  @Reference(`type`='*')
+  @Reference(`type` = '*')
   def addPricer(pricer: PricingEngine, attributes: ju.Map[String, Any]) {
-    pricers.synchronized {
-      pricers += pricer -> attributes.toMap
+    val t = attributes.getOrElse(PricingEngine.TYPE, PricingEngine.INDICATIVE_TYPE).asInstanceOf[String]
+
+    lock.synchronized {
+      val list = pricers.getOrElse(t, Nil);
+      pricers += t -> (pricer :: list)
     }
   }
 
-  def removePricer(pricer: PricingEngine) {
-    pricers.synchronized {
-      pricers -= pricer
+  def removePricer(pricer: PricingEngine, attributes: ju.Map[String, Any]) {
+    val t = attributes.getOrElse(PricingEngine.TYPE, PricingEngine.INDICATIVE_TYPE).asInstanceOf[String]
+
+    lock.synchronized {
+      val list = pricers.getOrElse(t, Nil).filterNot(_ eq pricer);
+      if (list.isEmpty) {
+        pricers -= t
+      } else {
+        pricers += t -> list
+      }
     }
   }
-  
+
   protected def gatewayID: String
 
   def submitPrice(clientID: String, quote: QuoteRequest): Boolean = {
     val id = gatewayID
-    
-    def findNextPricer(typeName: String): Option[PricingEngine] = {
-      pricers.synchronized {
-        val options = pricers.filter(_._2.exists(entry => entry._1 == PricingEngine.TYPE && entry._2 == typeName)).map(_._1)
-        if (options.isEmpty) {
-          None
-        } else {
-          Some(shuffle(options.toList).head)
-        }
+
+    // an alternative algorithm...
+//    def findNextPricerRoundRobin(typeName: String): Option[PricingEngine] = {
+//      lock.synchronized {
+//        val list = pricers.getOrElse(typeName, List.empty[PricingEngine])
+//
+//        list.headOption match {
+//          case s @ Some(pricer) => {
+//            pricers += typeName -> (list.drop(1) ::: (pricer :: Nil))
+//            s
+//          }
+//          case None => None
+//        }
+//      }
+//    }
+//
+    def findNextPricerRandom(typeName: String): Option[PricingEngine] = {
+      val list = lock.synchronized {
+        pricers.getOrElse(typeName, Nil)
+      }
+
+      if (list.isEmpty) {
+        None
+      } else {
+        list.drop(Random.nextInt(list.size) - 1).headOption
       }
     }
-    
+
+    def findNextPricer(typeName: String) = findNextPricerRandom(typeName);
+
     val typeName = if (quote.isIndicative) PricingEngine.INDICATIVE_TYPE else PricingEngine.FIRM_TYPE
-            
+
     findNextPricer(typeName) match {
       case Some(pricer) => {
         pricer.price(id, clientID, quote)
