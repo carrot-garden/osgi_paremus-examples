@@ -53,10 +53,10 @@ trait PricerSupport {
     }
   }
 
-  protected def gatewayID: String
+  protected def myID: String
 
   def submitPrice(clientID: String, quote: QuoteRequest): Boolean = {
-    val id = gatewayID
+    val id = myID
 
     // an alternative algorithm...
 //    def findNextPricerRoundRobin(typeName: String): Option[PricingEngine] = {

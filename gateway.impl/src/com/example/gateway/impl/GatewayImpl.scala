@@ -43,19 +43,19 @@ class GatewayImpl extends AnyRef
 	with PricerSupport 
 	with ClientSupport {
   
-  private var myID: Option[String] = None
+  private var id: Option[String] = None
 
   @Activate
   def activate(properties: ju.Map[String, Any]) {
-    myID = properties.toMap.get(PricingEngineClient.ID) match {
+    id = properties.toMap.get(PricingEngineClient.ID) match {
       case Some(str: String) => Some(str)
       case Some(other) => throw new IllegalArgumentException("Invalid id type")
       case None => throw new IllegalStateException("No id specified")
     }
   }
 
-  protected def gatewayID = {
-    myID.getOrElse(throw new IllegalStateException("Component not activated correctly"))
+  protected def myID = {
+    id.getOrElse(throw new IllegalStateException("Component not activated correctly"))
   }
 
   def request(loginToken: AnyRef, quotes: ju.Collection[QuoteRequest]) = {
