@@ -60,7 +60,7 @@ Now use the gateway cli to connect and request some quotes
 
 % gateway login demo
 % gateway request paremus ibm oracle microsoft yahoo
-% gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
+% gateway testbatch --batchSize=10000 --batchCount=10 --requestTimeout=60000
 
 Multi JVM:
 
@@ -77,7 +77,7 @@ $2 $fabric/bin/posh
 
 Now use the gateway cli to connect and request some quotes
 
-%0 gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
+%0 gateway testbatch --batchSize=10000 --batchCount=10 --requestTimeout=60000
 
 Fabric:
 
@@ -98,4 +98,4 @@ Now connect to the infrastructure fibre and import/deploy the gateway system.
 Now use the gateway cli to connect and request some quotes
 
 %0 sh gateway.scripts/services/client.osh
-%0 gateway testbatch --batchSize=10000 --batchCount=100 --requestTimeout=60000
+%0 gateway testbatch --batchSize=10000 --batchCount=10 --requestTimeout=60000
