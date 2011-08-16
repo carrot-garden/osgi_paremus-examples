@@ -47,11 +47,11 @@ $ $fabric/bin/posh
 Now build the repositories that nimble will use to install the artifacts
 
 % sh scripts/repos/makeRepos.osh
-% sh scripts/repos/loadRepos.osh aries
+% sh scripts/repos/loadRepos.osh
 
 Install the parts of the example, note that Nimble will download the dependencies from the repository.
 
-% nim add osgi.active.bundle/com.example.gateway.cli
+% nim add osgi.active.bundle/gateway.cli
 % nim add msf/com.example.gateway id=foo
 % nim add msf/com.example.pricer#f type=firm
 % nim add msf/com.example.pricer#i type=indicative

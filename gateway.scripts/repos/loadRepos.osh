@@ -17,7 +17,6 @@
 repos -lm gateway.repos
 repos -l gateway
 repos -l localrepo
-repos -l nimble-rs
 repos -l aries
 repos -l aries-ext
 
