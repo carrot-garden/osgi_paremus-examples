@@ -24,7 +24,7 @@
   <!-- set SystemGroup for security control -->
   <nature group="demo" />
 
-  <system name="pricer" boundary="container">
+  <system name="pricer" boundary="fibre">
     <system.part category="msf" name="com.example.pricer">
       <property name="type" value="firm" />
     </system.part>
@@ -38,14 +38,14 @@
     </replication.handler>
   </system>
 
-  <!--system name="persistence" boundary="container">
+  <!--system name="persistence" boundary="fibre">
     <system.part category="osgi.active.bundle" name="com.example.gateway.persistence" />
     <system.part category="osgi.active.bundle" name="com.paremus.dosgi.dsw.essencermi" />
     <system.part category="osgi.active.bundle" name="com.paremus.dosgi.discovery.slp" />
     <system.part category="osgi.active.bundle" name="com.paremus.dosgi.topologymanager" />
   </system-->
 
-  <system name="gateway" boundary="container">
+  <system name="gateway" boundary="fibre">
     <system.part category="msf" name="com.example.gateway">
       <property name="id" value="foo" />
     </system.part>
