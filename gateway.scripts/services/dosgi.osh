@@ -17,5 +17,6 @@
 repos -l nimble-rs
 nim add osgi.active.bundle/com.paremus.dosgi.dsw.essencermi
 nim add osgi.active.bundle/com.paremus.dosgi.discovery.slp
+#nim add osgi.active.bundle/com.paremus.rtidds
 #nim add osgi.active.bundle/com.paremus.dosgi.discovery.rtidds
 nim add osgi.active.bundle/com.paremus.dosgi.topologymanager
