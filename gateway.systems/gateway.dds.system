@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+  Copyright 2011 Paremus Limited
+
+  Licensed under the Apache License, Version 2.0 (the License)
+  you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  see http://www.apache.org/licenses/LICENSE-2.0
+-->
+<system name="gateway.dds.system" version="1.0"
+        boundary="fabric" repopath="gateway,nimble-rs,aries,aries-ext,fabric,fabric-ext,nimble-cmpn"
+  xmlns="http://schema.paremus.com/sf/1">
+  <description>Deploys a pricer and gateway component wired together using slp and essencermi</description>
+
+  <!-- set SystemGroup for security control -->
+  <nature group="demo" />
+
+  <system name="pricer" boundary="fibre">
+    <system.part category="msf" name="com.example.pricer">
+      <property name="type" value="firm" />
+    </system.part>
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.dsw.essencermi" />
+    <system.part category="osgi.active.bundle" name="com.paremus.rtidds"/>
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.discovery.rtidds" />
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.topologymanager" />
+    <replication.handler type="scalable">
+      <property name="scaleFactor" value="1" type="float" />
+      <property name="fixedDelta" value="-2" type="integer" />
+      <property name="minimum" value="1" type="integer" />
+    </replication.handler>
+  </system>
+
+  <!--system name="persistence" boundary="fibre">
+    <system.part category="osgi.active.bundle" name="com.example.gateway.persistence" />
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.dsw.essencermi" />
+    <system.part category="osgi.active.bundle" name="com.paremus.rtidds"/>
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.discovery.rtidds" />
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.topologymanager" />
+  </system-->
+
+  <system name="gateway" boundary="fibre">
+    <system.part category="msf" name="com.example.gateway">
+      <property name="id" value="foo" />
+    </system.part>
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.dsw.essencermi" />
+    <system.part category="osgi.active.bundle" name="com.paremus.rtidds"/>
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.discovery.rtidds" />
+    <system.part category="osgi.active.bundle" name="com.paremus.dosgi.topologymanager" />
+  </system>
+</system>
